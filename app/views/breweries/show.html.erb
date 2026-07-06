@@ -1,38 +1,45 @@
 <div class="container mt-4">
   <h1><%= @brewery.name %></h1>
-  <p><strong>Type:</strong> <%= @brewery.brewery_type %></p>
-  <p><strong>Location:</strong> <%= @brewery.city %>, <%= @brewery.state_province %>, <%= @brewery.country %></p>
-  <% if @brewery.website_url.present? %>
-    <p><strong>Website:</strong> <%= link_to @brewery.website_url, @brewery.website_url %></p>
-  <% end %>
 
-  <% if @brewery.latitude.present? && @brewery.longitude.present? %>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <div id="map" style="height: 350px;" class="mb-4 rounded"></div>
-    <script>
-      const map = L.map("map").setView([<%= @brewery.latitude %>, <%= @brewery.longitude %>], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors"
-      }).addTo(map);
-      L.marker([<%= @brewery.latitude %>, <%= @brewery.longitude %>])
-        .addTo(map)
-        .bindPopup("<%= j @brewery.name %>");
-    </script>
-  <% else %>
-    <p class="text-muted">No location data available for this brewery.</p>
-  <% end %>
-
-  <h2 class="mt-4">Beers from this brewery</h2>
-  <% if @beers.any? %>
-    <ul class="list-group">
-      <% @beers.each do |beer| %>
-        <li class="list-group-item">
-          <%= link_to beer.name, beer %> — <%= beer.style.name %>
-        </li>
+  <div class="row">
+    <div class="col-md-6">
+      <p><strong>Type:</strong> <%= @brewery.brewery_type %></p>
+      <p><strong>Location:</strong> <%= @brewery.city %>, <%= @brewery.state_province %>, <%= @brewery.country %></p>
+      <% if @brewery.website_url.present? %>
+        <p><strong>Website:</strong> <%= link_to @brewery.website_url, @brewery.website_url %></p>
       <% end %>
-    </ul>
-  <% else %>
-    <p>No beers on file for this brewery yet.</p>
-  <% end %>
+
+      <h2 class="mt-4">Beers from this brewery</h2>
+      <% if @beers.any? %>
+        <ul class="list-group">
+          <% @beers.each do |beer| %>
+            <li class="list-group-item">
+              <%= link_to beer.name, beer %> — <%= beer.style.name %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>No beers on file for this brewery yet.</p>
+      <% end %>
+    </div>
+
+    <div class="col-md-6">
+      <% if @brewery.latitude.present? && @brewery.longitude.present? %>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <div id="map" style="height: 350px;" class="mb-4 rounded"></div>
+        <script>
+          const map = L.map("map").setView([<%= @brewery.latitude %>, <%= @brewery.longitude %>], 13);
+          L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+          }).addTo(map);
+          L.marker([<%= @brewery.latitude %>, <%= @brewery.longitude %>])
+            .addTo(map)
+            .bindPopup("<%= j @brewery.name %>");
+        </script>
+      <% else %>
+        <p class="text-muted">No location data available for this brewery.</p>
+      <% end %>
+    </div>
+  </div>
 </div>
