@@ -1,0 +1,21 @@
+<div class="container mt-4">
+  <h1><%= @beer.name %></h1>
+  <p><strong>Style:</strong> <%= link_to @beer.style.name, @beer.style %></p>
+  <p><strong>Brewery:</strong> <%= link_to @beer.brewery.name, @beer.brewery %> (<%= @beer.brewery.city %>)</p>
+  <p><strong>ABV:</strong> <%= @beer.abv %> &nbsp; <strong>IBU:</strong> <%= @beer.ibu || "N/A" %></p>
+  <p><strong>Hops:</strong> <%= @beer.hops.any? ? @beer.hops.map(&:name).join(", ") : "None listed" %></p>
+
+  <h2 class="mt-4">Reviews (<%= @beer.reviews.count %>)</h2>
+  <% if @beer.reviews.any? %>
+    <% @beer.reviews.each do |review| %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <strong><%= review.user.username %></strong> — <%= review.rating %>/5
+          <p class="mb-0"><%= review.body %></p>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No reviews yet.</p>
+  <% end %>
+</div>

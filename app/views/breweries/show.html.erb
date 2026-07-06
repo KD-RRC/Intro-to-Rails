@@ -1,0 +1,21 @@
+<div class="container mt-4">
+  <h1><%= @brewery.name %></h1>
+  <p><strong>Type:</strong> <%= @brewery.brewery_type %></p>
+  <p><strong>Location:</strong> <%= @brewery.city %>, <%= @brewery.state_province %>, <%= @brewery.country %></p>
+  <% if @brewery.website_url.present? %>
+    <p><strong>Website:</strong> <%= link_to @brewery.website_url, @brewery.website_url %></p>
+  <% end %>
+
+  <h2 class="mt-4">Beers from this brewery</h2>
+  <% if @beers.any? %>
+    <ul class="list-group">
+      <% @beers.each do |beer| %>
+        <li class="list-group-item">
+          <%= link_to beer.name, beer %> — <%= beer.style.name %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No beers on file for this brewery yet.</p>
+  <% end %>
+</div>

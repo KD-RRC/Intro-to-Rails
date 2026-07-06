@@ -1,0 +1,15 @@
+<div class="container mt-4">
+  <h1><%= @style.name %></h1>
+  <h2>Beers in this style</h2>
+  <% if @beers.any? %>
+    <ul class="list-group">
+      <% @beers.each do |beer| %>
+        <li class="list-group-item">
+          <%= link_to beer.name, beer %> — <%= link_to beer.brewery.name, beer.brewery %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No beers in this style yet.</p>
+  <% end %>
+</div>
