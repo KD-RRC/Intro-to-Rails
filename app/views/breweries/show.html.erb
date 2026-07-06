@@ -6,6 +6,23 @@
     <p><strong>Website:</strong> <%= link_to @brewery.website_url, @brewery.website_url %></p>
   <% end %>
 
+  <% if @brewery.latitude.present? && @brewery.longitude.present? %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <div id="map" style="height: 350px;" class="mb-4 rounded"></div>
+    <script>
+      const map = L.map("map").setView([<%= @brewery.latitude %>, <%= @brewery.longitude %>], 13);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(map);
+      L.marker([<%= @brewery.latitude %>, <%= @brewery.longitude %>])
+        .addTo(map)
+        .bindPopup("<%= j @brewery.name %>");
+    </script>
+  <% else %>
+    <p class="text-muted">No location data available for this brewery.</p>
+  <% end %>
+
   <h2 class="mt-4">Beers from this brewery</h2>
   <% if @beers.any? %>
     <ul class="list-group">
