@@ -29,17 +29,27 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <div id="map" style="height: 350px;" class="mb-4 rounded"></div>
         <script>
-          const map = L.map("map").setView([<%= @brewery.latitude %>, <%= @brewery.longitude %>], 13);
-          L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "&copy; OpenStreetMap contributors"
-          }).addTo(map);
-          L.marker([<%= @brewery.latitude %>, <%= @brewery.longitude %>])
-            .addTo(map)
-            .bindPopup("<%= j @brewery.name %>");
+          document.addEventListener("turbo:load", function () {
+            const mapContainer = document.getElementById("map");
+            if (!mapContainer) return;
+
+            // Reset any leftover Leaflet instance from a previous Turbo navigation
+            if (mapContainer._leaflet_id) {
+              mapContainer._leaflet_id = null;
+            }
+
+            const map = L.map("map").setView([<%= @brewery.latitude %>, <%= @brewery.longitude %>], 13);
+            L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              attribution: "&copy; OpenStreetMap contributors"
+            }).addTo(map);
+            L.marker([<%= @brewery.latitude %>, <%= @brewery.longitude %>])
+              .addTo(map)
+              .bindPopup("<%= j @brewery.name %>");
+          });
         </script>
-      <% else %>
-        <p class="text-muted">No location data available for this brewery.</p>
-      <% end %>
+  <% else %>
+    <p class="text-muted">No location data available for this brewery.</p>
+  <% end %>
     </div>
   </div>
 </div>
