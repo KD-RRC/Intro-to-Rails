@@ -1,5 +1,14 @@
 <div class="container mt-4">
   <h1>Beers</h1>
+
+  <%= form_with url: search_path, method: :get, class: "mb-3 d-flex gap-2" do %>
+  <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search beers...", style: "max-width: 250px;" %>
+  <%= select_tag :style_id,
+        options_from_collection_for_select(Style.order(:name), :id, :name, params[:style_id]),
+        include_blank: "All styles", class: "form-select", style: "max-width: 200px;" %>
+  <%= submit_tag "Search", class: "btn btn-primary" %>
+  <% end %>
+
   <table class="table table-striped">
     <thead>
       <tr><th>Name</th><th>Style</th><th>Brewery</th><th>ABV</th></tr>
@@ -15,4 +24,5 @@
       <% end %>
     </tbody>
   </table>
+    <%= paginate @beers %>
 </div>

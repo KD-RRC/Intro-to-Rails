@@ -3,6 +3,7 @@ class BreweriesController < ApplicationController
     @breweries = Brewery.order(:country, :name)
     @breweries = @breweries.where(country: params[:country]) if params[:country].present?
     @countries = Brewery.distinct.order(:country).pluck(:country)
+    @breweries = @breweries.page(params[:page])
   end
 
   def show

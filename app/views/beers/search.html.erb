@@ -1,2 +1,28 @@
-<h1>Beers#search</h1>
-<p>Find me in app/views/beers/search.html.erb</p>
+<div class="container mt-4">
+  <h1>Search Results</h1>
+  <p>
+    <% if @query.present? %>Searching for "<%= @query %>"<% end %>
+    <%= link_to "New search", beers_path, class: "ms-2" %>
+  </p>
+
+  <% if @beers.any? %>
+    <table class="table table-striped">
+      <thead>
+        <tr><th>Name</th><th>Style</th><th>Brewery</th><th>ABV</th></tr>
+      </thead>
+      <tbody>
+        <% @beers.each do |beer| %>
+          <tr>
+            <td><%= link_to beer.name, beer %></td>
+            <td><%= link_to beer.style.name, beer.style %></td>
+            <td><%= link_to beer.brewery.name, beer.brewery %></td>
+            <td><%= beer.abv %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @beers %>
+  <% else %>
+    <p>No beers matched your search.</p>
+  <% end %>
+</div>
