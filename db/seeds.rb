@@ -1,3 +1,16 @@
+# ============================================================
+# Brew Finder — Database Seed Script
+#
+# This file demonstrates all three required data sources:
+#   1. Open Brewery DB API  — real brewery data (JSON, external API)
+#   2. Craft Beers CSV      — real beer data (local CSV file)
+#   3. Faker gem            — generated users, reviews, and hops
+#
+# The API and CSV do not share keys, so beers are randomly
+# assigned to an imported brewery at seed time. Styles are
+# extracted from the CSV into their own table.
+# ============================================================
+
 require "open-uri"
 require "json"
 require "csv"
@@ -11,7 +24,9 @@ User.destroy_all
 Style.destroy_all
 Brewery.destroy_all
 
-# ── Source 1: Open Brewery DB API ────────────────────────────────
+# Source 1: Open Brewery DB API ────────────────────────────────
+# Pulls real brewery records via HTTP, including a dedicated
+# Canadian query since the general endpoint is US-heavy.
 puts "Importing breweries from Open Brewery DB API..."
 
 def import_breweries(url)
@@ -37,7 +52,9 @@ import_breweries("https://api.openbrewerydb.org/v1/breweries?by_country=canada&p
 
 puts "  #{Brewery.count} breweries created."
 
-# ── Source 2: Craft Beers CSV ────────────────────────────────────
+# Source 2: Craft Beers CSV ────────────────────────────────────
+# Local dataset of 2,400+ real beers. Styles are extracted into
+# their own table via find_or_create_by to avoid duplicates.
 puts "Importing beers and styles from CSV..."
 brewery_ids = Brewery.pluck(:id)
 csv = CSV.read(Rails.root.join("db/data/beers.csv"), headers: true, encoding: "bom|utf-8")
@@ -55,7 +72,9 @@ csv.each do |row|
 end
 puts "  #{Beer.count} beers, #{Style.count} styles created."
 
-# ── Source 3: Faker ──────────────────────────────────────────────
+# Source 3: Faker ──────────────────────────────────────────────
+# Generates hops, users, and reviews — none of which have a
+# reliable public dataset, so Faker fills this gap.
 puts "Generating hops, users, and reviews with Faker..."
 hops = 20.times.map { Hop.find_or_create_by(name: Faker::Beer.unique.hop) }
 Beer.find_each { |beer| beer.hops = hops.sample(rand(1..3)) }
