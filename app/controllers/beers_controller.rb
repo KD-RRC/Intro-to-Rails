@@ -13,6 +13,10 @@ class BeersController < ApplicationController
     @beer = Beer.includes(:brewery, :style, :hops, reviews: :user).find(params[:id])
   end
 
+  def random
+    redirect_to Beer.order("RANDOM()").first
+  end
+
   def search
     @query = params[:q]
     @beers = Beer.includes(:brewery, :style)

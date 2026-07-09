@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "beers/search"
   get "breweries/index"
   get "breweries/show"
+  get "beers/random", to: "beers#random"
   root "breweries#index"
   resources :breweries, only: [:index, :show]
   resources :beers, only: [:index, :show]
