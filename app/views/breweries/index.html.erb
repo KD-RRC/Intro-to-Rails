@@ -3,9 +3,9 @@
 
   <%= form_with url: breweries_path, method: :get, class: "mb-3 d-flex gap-2" do %>
     <%= select_tag :country,
-          options_for_select(@countries, params[:country]),
-          include_blank: "All countries", class: "form-select", style: "max-width: 250px;",
-          onchange: "this.form.requestSubmit()" %>
+        options_for_select(@countries.map { |country, count| ["#{country} (#{count})", country] }, params[:country]),
+        include_blank: "All countries", class: "form-select", style: "max-width: 250px;",
+        onchange: "this.form.requestSubmit()" %>
   <% end %>
 
   <table class="table table-striped">

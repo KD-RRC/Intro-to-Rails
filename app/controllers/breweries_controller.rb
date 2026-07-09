@@ -2,7 +2,7 @@ class BreweriesController < ApplicationController
   def index
     @breweries = Brewery.order(:country, :name)
     @breweries = @breweries.where(country: params[:country]) if params[:country].present?
-    @countries = Brewery.distinct.order(:country).pluck(:country)
+    @countries = Brewery.group(:country).order(:country).count
     @breweries = @breweries.page(params[:page])
   end
 
