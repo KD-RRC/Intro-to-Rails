@@ -5,7 +5,9 @@
     <%= link_to "New search", beers_path, class: "ms-2" %>
   </p>
 
-  <% if @beers.any? %>
+  <% if @query.blank? && params[:style_id].blank? %>
+    <p class="text-muted">Enter a beer name or choose a style to search.</p>
+  <% elsif @beers.any? %>
     <table class="table table-striped">
       <thead>
         <tr><th>Name</th><th>Style</th><th>Brewery</th><th>ABV</th></tr>
@@ -23,6 +25,6 @@
     </table>
     <%= paginate @beers %>
   <% else %>
-    <p>No beers matched your search.</p>
+    <p>No beers matched your search. Try a different name or style.</p>
   <% end %>
 </div>
