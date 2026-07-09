@@ -1,6 +1,12 @@
 class BeersController < ApplicationController
   def index
-    @beers = Beer.includes(:brewery, :style).order(:name).page(params[:page])
+    @beers = Beer.includes(:brewery, :style)
+    @beers = case params[:sort]
+             when "abv_desc" then @beers.order(abv: :desc)
+             when "abv_asc" then @beers.order(abv: :asc)
+             else @beers.order(:name)
+             end
+    @beers = @beers.page(params[:page])
   end
 
   def show
