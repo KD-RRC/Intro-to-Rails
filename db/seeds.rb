@@ -83,12 +83,37 @@ users = 50.times.map do
   User.create(username: Faker::Internet.unique.username, email: Faker::Internet.unique.email)
 end
 
-300.times do
+review_openers = [
+  "Really enjoyed this one.", "Solid choice for a weekend session.", "Wasn't quite what I expected.",
+  "This has become one of my go-tos.", "Picked this up on a friend's recommendation.",
+  "First time trying this style and I'm impressed.", "Grabbed a six-pack after tasting this on tap.",
+  "Poured this after a long day and no regrets.", "Been meaning to try this for months.",
+  "Cracked this one open at a barbecue.", "Tried this at a local taproom first.",
+  "Bought this on a whim and don't regret it.", "My go-to when hosting friends.",
+  "Spotted this on the shelf and had to try it."
+]
+review_middles = [
+  "The balance of flavors really works well.", "A bit too bitter for my taste, but still drinkable.",
+  "Smooth finish with just the right amount of carbonation.", "Great aroma right out of the can.",
+  "Pairs really nicely with food.", "A little thin-bodied, but the flavor makes up for it.",
+  "Exactly the kind of easy-drinking beer I look for.", "Complex without being overwhelming.",
+  "Nothing groundbreaking, but reliably good.", "Surprisingly refreshing for the style.",
+  "Has a nice malty backbone.", "The hop character really stands out."
+]
+review_closers = [
+  "Would definitely buy again.", "Not sure I'd get it again, but glad I tried it.",
+  "Already looking forward to the next one.", "Solid pick for the price.",
+  "Worth seeking out if you can find it.", "A dependable choice any time of year.",
+  "Might not be for everyone, but it worked for me.", "Adding this to my regular rotation.",
+  "Would recommend to a friend."
+]
+
+1000.times do
   Review.create(
     user: users.sample,
     beer: Beer.order("RANDOM()").first,
     rating: rand(1..5),
-    body: Faker::Lorem.paragraph(sentence_count: 2)
+    body: "#{review_openers.sample} #{review_middles.sample} #{review_closers.sample}"
   )
 end
 
