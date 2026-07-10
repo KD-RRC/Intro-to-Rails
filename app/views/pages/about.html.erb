@@ -1,12 +1,43 @@
+<% content_for(:title, "About — Brew Finder") %>
 <div class="container mt-4">
-  <h1>About This Project</h1>
+  <h1>About Brew Finder</h1>
+
   <p>
-    This app pulls data from three sources: the Open Brewery DB API (breweries,
-    including GPS coordinates), a public craft beers CSV dataset (beers and
-    styles), and the Faker gem (users, reviews, and hops). Since the API and
-    CSV don't share keys, beers are linked to a random imported brewery at
-    seed time, while styles are extracted from the CSV into their own table.
+    Brew Finder is a Ruby on Rails application for exploring craft breweries,
+    the beers they produce, and the community's reviews of them. The app was
+    built for the Intro to Rails project and combines real-world data from
+    three independent sources into a single relational database of seven tables.
   </p>
-  <%# Optional: embed your ERD image once you add it to app/assets/images/ %>
-  <%# <%= image_tag "erd.png", class: "img-fluid mt-3" %>
+
+  <h2 class="mt-4">Data Sources</h2>
+  <p>
+    <strong>1. Open Brewery DB API</strong> — a public REST API returning JSON
+    brewery records, including name, type, city, state/province, country, and
+    GPS coordinates. The seed script queries both a general endpoint and a
+    dedicated <code>by_country=canada</code> endpoint, since the general
+    results skew heavily toward the United States.
+  </p>
+  <p>
+    <strong>2. Craft Beers CSV</strong> — a local dataset of over 2,400 real
+    beers, each with a name, style, ABV, and IBU. Unique styles are extracted
+    from this file into their own <code>styles</code> table.
+  </p>
+  <p>
+    <strong>3. Faker gem</strong> — generates hops, users, and reviews, since
+    no reliable public dataset exists for these. Faker fills a gap the other
+    two sources can't cover.
+  </p>
+
+  <h2 class="mt-4">How the Data Connects</h2>
+  <p>
+    The API and CSV sources don't share any common key, so at seed time each
+    imported beer is linked to a randomly selected brewery already in the
+    database. Beers belong to a brewery and a style. Reviews connect a user
+    to a beer, forming a many-to-many relationship between users and beers.
+    A second many-to-many relationship links beers and hops through a
+    <code>beer_hops</code> join table.
+  </p>
+
+  <h2 class="mt-4">Entity Relationship Diagram</h2>
+  <%= image_tag "erd.svg", class: "img-fluid mt-2 border rounded", alt: "Entity relationship diagram showing breweries, styles, beers, users, reviews, hops, and the beer_hops join table" %>
 </div>
